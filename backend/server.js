@@ -16,7 +16,7 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ error: err.message || 'Server error' });
 });
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 const MONGO = process.env.MONGO_URI || 'mongodb://localhost:27017/expense-tracker';
 
 mongoose.connect(MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
