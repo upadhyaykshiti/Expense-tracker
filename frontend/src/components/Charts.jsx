@@ -26,11 +26,17 @@ const COLORS = [
 
 export default function Charts({ items = [] }) {
   // --- Expense by Category ---
+  // const byCategory = items.reduce((acc, cur) => {
+  //   acc[cur.category] =
+  //     (acc[cur.category] || 0) + (cur.type === "expense" ? cur.amount : 0);
+  //   return acc;
+  // }, {});
+  // --- Expense by Category ---
   const byCategory = items.reduce((acc, cur) => {
-    acc[cur.category] =
-      (acc[cur.category] || 0) + (cur.type === "expense" ? cur.amount : 0);
-    return acc;
+  acc[cur.category] = (acc[cur.category] || 0) + cur.amount;
+  return acc;
   }, {});
+
 
   const pieData = Object.entries(byCategory).map(([k, v]) => ({
     name: k,
@@ -49,12 +55,12 @@ export default function Charts({ items = [] }) {
   const barData = Object.values(daily).slice(-10); // last 10 days
 
   return (
-    <div className="bg-white border border-gray-200 p-6 rounded-2xl shadow-md space-y-6 hover:shadow-lg transition-all duration-300">
-      <h3 className="font-semibold text-gray-800 text-lg">Analytics</h3>
+    <div className="p-6 space-y-6 transition-all duration-300 bg-white border border-gray-200 shadow-md rounded-2xl hover:shadow-lg">
+      <h3 className="text-lg font-semibold text-gray-800">Analytics</h3>
 
       {/* Expense by Category */}
       <div>
-        <div className="text-sm text-gray-600 font-medium text-center mb-3">
+        <div className="mb-3 text-sm font-medium text-center text-gray-600">
           Expense by Category
         </div>
 
@@ -68,9 +74,6 @@ export default function Charts({ items = [] }) {
                   nameKey="name"
                   outerRadius={85}
                   innerRadius={40}
-                  label={({ name, percent }) =>
-                    `${name}: ${(percent * 100).toFixed(0)}%`
-                  }
                   labelLine={false}
                   isAnimationActive={true}
                 >
@@ -94,7 +97,7 @@ export default function Charts({ items = [] }) {
             </ResponsiveContainer>
           </div>
         ) : (
-          <div className="text-gray-400 text-center py-8 text-sm">
+          <div className="py-8 text-sm text-center text-gray-400">
             No expense data yet.
           </div>
         )}
@@ -102,7 +105,7 @@ export default function Charts({ items = [] }) {
 
       {/* Daily Income vs Expense */}
       <div>
-        <div className="text-sm text-gray-600 font-medium text-center mb-3">
+        <div className="mb-3 text-sm font-medium text-center text-gray-600">
           Daily Income vs Expense
         </div>
 
@@ -169,7 +172,7 @@ export default function Charts({ items = [] }) {
             </ResponsiveContainer>
           </div>
         ) : (
-          <div className="text-gray-400 text-center py-8 text-sm">
+          <div className="py-8 text-sm text-center text-gray-400">
             No transaction data yet.
           </div>
         )}
@@ -177,3 +180,4 @@ export default function Charts({ items = [] }) {
     </div>
   );
 }
+

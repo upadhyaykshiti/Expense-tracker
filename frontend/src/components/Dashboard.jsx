@@ -43,6 +43,34 @@ export default function Dashboard() {
     dispatch(fetchTransactions(filters));
   };
 
+
+const handleRefresh = () => {
+    setFilters({
+      type: "",
+      category: "",
+      startDate: "",
+      endDate: "",
+    });
+    dispatch(fetchTransactions({})); // reload full data
+  };
+
+  const handleFilterChange = (key, value) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const filteredItems = items.filter((item) => {
+    const { type, category, startDate, endDate } = filters;
+    const date = new Date(item.date);
+
+    return (
+      (!type || item.type === type) &&
+      (!category || item.category === category) &&
+      (!startDate || date >= new Date(startDate)) &&
+      (!endDate || date <= new Date(endDate))
+    );
+  });
+  
+
   // return (
   //   <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-6">
   //     <div className="max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-3 gap-6">
@@ -223,7 +251,9 @@ export default function Dashboard() {
 
               {/* Refresh Button */}
               <button
-                onClick={() => dispatch(fetchTransactions(filters))}
+                // onClick={() => dispatch(fetchTransactions(filters))}
+                onClick={handleRefresh}
+
                 className="flex-1 min-w-[45%] sm:min-w-[40px] p-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg shadow transition flex items-center justify-center"
                 title="Refresh"
               >
